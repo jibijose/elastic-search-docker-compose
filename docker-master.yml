@@ -1,0 +1,69 @@
+version: '3.7'
+services:
+  es-master_1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:$ELK_VERSION
+    container_name: es-master_1
+    environment:
+      - node.name=es-master_1
+      - cluster.name=docker-cluster
+      - discovery.seed_hosts=es-master_1,es-master_2,es-master_3
+      - cluster.initial_master_nodes=es-master_1,es-master_2,es-master_3
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /usr/share/elasticsearch/data
+    ports:
+      - "9200"
+    networks:
+      - es_net
+
+  es-master_2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:$ELK_VERSION
+    container_name: es-master_2
+    environment:
+      - node.name=es-master_2
+      - cluster.name=docker-cluster
+      - discovery.seed_hosts=es-master_1,es-master_2,es-master_3
+      - cluster.initial_master_nodes=es-master_1,es-master_2,es-master_3
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /usr/share/elasticsearch/data
+    ports:
+      - "9200"
+    networks:
+      - es_net
+
+  es-master_3:
+    image: docker.elastic.co/elasticsearch/elasticsearch:$ELK_VERSION
+    container_name: es-master_3
+    environment:
+      - node.name=es-master_3
+      - cluster.name=docker-cluster
+      - discovery.seed_hosts=es-master_1,es-master_2,es-master_3
+      - cluster.initial_master_nodes=es-master_1,es-master_2,es-master_3
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /usr/share/elasticsearch/data
+    ports:
+      - "9200"
+    networks:
+      - es_net
+
+networks:
+  es_net:
+    name: es_net
+    driver: bridge

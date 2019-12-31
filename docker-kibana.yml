@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  es-kibana:
+    image: docker.elastic.co/kibana/kibana:$ELK_VERSION
+    environment:
+        SERVER_NAME: kibana.local
+        ELASTICSEARCH_HOSTS: '["http://es-master_1:9200","http://es-master_2:9200","http://es-master_3:9200"]'
+    ports:
+        - "5601"
+    networks:
+        - es_net
+
+  es-nginx:
+    image: nginx:latest
+    container_name: es-nginx
+    volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+        - es-kibana
+    ports:
+        - "5601:5601"
+    networks:
+        - es_net
+
+networks:
+    es_net:
+        external: true

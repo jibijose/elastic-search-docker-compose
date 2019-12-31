@@ -1,0 +1,25 @@
+version: '3.7'
+services:  
+  es-node:
+    image: docker.elastic.co/elasticsearch/elasticsearch:$ELK_VERSION
+    environment:
+        - node.name=es-node
+        - cluster.name=docker-cluster
+        - discovery.seed_hosts=es-master_1,es-master_2,es-master_3
+        - cluster.initial_master_nodes=es-master_1,es-master_2,es-master_3
+        - bootstrap.memory_lock=true
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+        - /usr/share/elasticsearch/data
+    ports:
+        - "9200"
+    networks:
+        - es_net
+
+networks:
+  es_net:
+    external: true
