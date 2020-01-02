@@ -44,6 +44,7 @@ curl -X PUT "localhost:9200/employee?pretty" -H 'Content-Type: application/json'
 }
 '
 curl -X GET "localhost:9200/employee/_settings?pretty"
+curl -X GET "localhost:9200/_cat/shards/employee?v&pretty"
 curl -X GET "localhost:9200/_cat/indices?v&pretty"
 
 echo "******************************************************************************************************************"
