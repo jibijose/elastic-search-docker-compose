@@ -6,10 +6,26 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 https://github.com/ruanbekker/elasticsearch-demo
 https://gist.github.com/ruanbekker/e8a09604b14f37e8d2f743a87b930f93
 
+https://github.com/kuldeepsingh99/microservice-elk
+https://github.com/elastic/stack-docker
+
+
+docker run -it --entrypoint /bin/bash docker.elastic.co/beats/filebeat:7.5.1
+docker exec -it docker.elastic.co/beats/filebeat:7.5.1 /bin/bash
+
+docker run -it -v /Users/jibijose:/var/log --entrypoint /bin/bash docker.elastic.co/beats/filebeat:7.5.1
+
+
 echo "******************************************************************************************************************"
 echo "Single docker for quick start"
 docker pull docker.elastic.co/elasticsearch/elasticsearch:7.5.1
 docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+
+echo "******************************************************************************************************************"
+echo "Multi node cluster docker compose"
+docker-compose -f docker-compose-all-single.yml up
+docker-compose -f docker-compose-all-single.yml ps
+docker-compose -f docker-compose-all-single.yml down
 
 echo "******************************************************************************************************************"
 echo "Multi node cluster docker compose"
@@ -24,6 +40,10 @@ docker-compose -f docker-node.yml down
 docker-compose -f docker-kibana.yml up --scale es-kibana=2
 docker-compose -f docker-kibana.yml ps
 docker-compose -f docker-kibana.yml down
+
+docker-compose -f docker-logstash.yml up
+docker-compose -f docker-logstash.yml ps
+docker-compose -f docker-logstash.yml down
 
 echo "******************************************************************************************************************"
 echo "Check cluster health"
